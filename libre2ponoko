@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require File.join(File.dirname(__FILE__), 'lib', 'libre2ponoko.rb')
+
+options = {}
+options[:template] = 1
+options[:verbose]  = false
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options]"
+  opts.separator "Options:"
+
+  opts.on("-p", "--template [TEMPLATE_SIZE]", ['1', '2', '3'],
+          "Template size (1, 2, 3)") do |t|
+    options[:template] = t.to_i
+  end
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+  # Another typical switch to print the version.
+  opts.on_tail("--version", "Show version") do
+    puts Libre2Ponoko::Version.join('.')
+    exit
+  end
+end.parse!
+
+p options
+p ARGV
+
