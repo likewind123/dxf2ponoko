@@ -1,6 +1,6 @@
 # 03 Oct 2011
 
-Imported into libre2ponoko to avoid stupidity with git modules. I might make this more "proper" later...
+Imported into dxf2ponoko to avoid stupidity with git modules. I might make this more "proper" later...
 
 # 01 Oct 2011
 

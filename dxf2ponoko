@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require File.join(File.dirname(__FILE__), 'lib', 'libre2ponoko.rb')
+require File.join(File.dirname(__FILE__), 'lib', 'dxf2ponoko.rb')
 
 options = {}
 options[:template] = 1
