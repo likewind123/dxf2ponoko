@@ -12,9 +12,6 @@ class DXF2PonokoOpt
     ].map{|x| "    #{x}"}
     
     @options = {}
-    @options[:dxf] = nil
-    @options[:out] = nil
-    @options[:template] = nil
     @options[:verbose]  = false
     
     OptionParser.new do |opts|
@@ -52,6 +49,13 @@ class DXF2PonokoOpt
         exit
       end
     end.parse!
+    
+    # This is to `./dxf2ponoko` == `./dxf2ponoko --help`, although this is
+    #+ a pretty horrible way to do it...
+    if @options == {verbose: false}
+      puts `#{$0} --help`
+      exit
+    end
     
     required(dxf:      ['-d', 'DXF Filename'],
              template: ['-p', 'Template size'])
