@@ -3,35 +3,75 @@
 require 'optparse'
 require File.join(File.dirname(__FILE__), 'lib', 'dxf2ponoko.rb')
 
-options = {}
-options[:template] = 1
-options[:verbose]  = false
+class DXF2PonokoOpt
+  def initialize
+    @template_info = [
+      '1     7.1" x  7.1" (181mm x 181mm)',
+      '2    15.1" x 15.1" (384mm x 384mm)',
+      '3    31.1" x 15.1" (790mm x 384mm)'
+    ].map{|x| "    #{x}"}
+    
+    @options = {}
+    @options[:dxf] = nil
+    @options[:out] = nil
+    @options[:template] = nil
+    @options[:verbose]  = false
+    
+    OptionParser.new do |opts|
+      opts.banner = "Usage: #{$0} [OPTIONS]"
+      opts.separator "Options:"
+      
+      opts.on("-d FILENAME", "--dxf-file FILENAME") do |f|
+        @options[:dxf] = f
+      end
+      
+       opts.on("-o FILENAME", "--out-file FILENAME") do |f|
+        @options[:out] = f
+      end
+      
+      opts.on("-p TEMPLATE_SIZE", "--template TEMPLATE_SIZE", ['1', '2', '3'],
+              "Template size (see \"Template Sizes\"") do |t|
+        @options[:template] = t.to_i
+      end
+      
+      opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+        @options[:verbose] = v
+      end
+      
+      opts.on_tail("-h", "--help", "Show this message") do
+        puts opts
+        puts
+        puts "Template Sizes:"
+        puts (@template_info * "\n")
+        exit
+      end
+      
+      # Another typical switch to print the version.
+      opts.on_tail("--version", "Show version") do
+        puts Libre2Ponoko::Version.join('.')
+        exit
+      end
+    end.parse!
+    
+    required(dxf:      ['-d', 'DXF Filename'],
+             template: ['-p', 'Template size'])
 
-OptionParser.new do |opts|
-  opts.banner = "Usage: #{$0} [options]"
-  opts.separator "Options:"
-
-  opts.on("-p", "--template [TEMPLATE_SIZE]", ['1', '2', '3'],
-          "Template size (1, 2, 3)") do |t|
-    options[:template] = t.to_i
+    @options
+  rescue OptionParser::MissingArgument => e
+    msg = e.message
+    puts msg[0].capitalize + msg[1..-1] # Wtf? Fixme :(
+    exit 1
   end
+  
+  def required(hash)
+    hash.map do |sym,arr|
+      if @options[sym].nil?
+        puts "#{arr[1]} (#{arr[0]}) required."
+        exit 1
+      end
+    end
+   end
+end
 
-  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-    options[:verbose] = v
-  end
-
-  opts.on_tail("-h", "--help", "Show this message") do
-    puts opts
-    exit
-  end
-
-  # Another typical switch to print the version.
-  opts.on_tail("--version", "Show version") do
-    puts Libre2Ponoko::Version.join('.')
-    exit
-  end
-end.parse!
-
-p options
-p ARGV
-
+opts = DXF2PonokoOpt.new
+Libre2Ponoko.new(opts)

@@ -14,6 +14,7 @@ class Libre2Ponoko
 
   def initialize(opts)
     @opts = opts
+    puts "in Libre2Ponoko.new"
   end
 
   def generate_svg(template_number, dxf_file)
