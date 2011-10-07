@@ -9,12 +9,12 @@ FILE_DIR     = File.dirname(__FILE__)
 TEMPLATE_DIR = File.join(FILE_DIR, 'templates')
 TEMPLATE_FILE_FMT = File.join(TEMPLATE_DIR, 'p%i_inkscape_English.svg')
 
-class Libre2Ponoko
+class DXF2Ponoko
   Version = [0, 1]
 
   def initialize(opts)
     @opts = opts
-    puts "in Libre2Ponoko.new"
+    puts "in DXF2Ponoko.new"
   end
 
   def generate_svg(template_number, dxf_file)

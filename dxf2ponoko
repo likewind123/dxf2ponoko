@@ -74,4 +74,4 @@ class DXF2PonokoOpt
 end
 
 opts = DXF2PonokoOpt.new
-Libre2Ponoko.new(opts)
+DXF2Ponoko.new(opts)
