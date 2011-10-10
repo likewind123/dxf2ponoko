@@ -4,6 +4,8 @@ require 'optparse'
 require File.join(File.dirname(__FILE__), 'lib', 'dxf2ponoko.rb')
 
 class DXF2PonokoOpt
+  attr_reader :options
+
   def initialize
     @template_info = [
       '1     7.1" x  7.1" (181mm x 181mm)',
@@ -24,6 +26,10 @@ class DXF2PonokoOpt
       
        opts.on("-o FILENAME", "--out-file FILENAME") do |f|
         @options[:out] = f
+      end
+      
+      opts.on("-t TYPE", "--type TYPE", ['cnc', 'laser']) do |t|
+        @options[:type] = t
       end
       
       opts.on("-p TEMPLATE_SIZE", "--template TEMPLATE_SIZE", ['1', '2', '3'],
@@ -77,5 +83,5 @@ class DXF2PonokoOpt
    end
 end
 
-opts = DXF2PonokoOpt.new
+opts = DXF2PonokoOpt.new.options
 DXF2Ponoko.new(opts)
