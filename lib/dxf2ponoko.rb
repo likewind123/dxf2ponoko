@@ -15,15 +15,14 @@ class DXF2Ponoko
 
   def initialize(opts)
     @opts = opts
-    puts "in DXF2Ponoko.new"
-    svg = generate_svg(opts[:type], opts[:template], opts[:dxf])
+    
     if File.exist?(opts[:out])
       puts "Error: #{opts[:out]} exists. Please move or delete it and run dxf2ponoko again."
       exit 1
-    else
-      File.open(opts[:out], 'w'){|f| f.write svg }
     end
-    puts "leaving DXF2Ponoko.new"
+    
+    svg = generate_svg(opts[:type], opts[:template], opts[:dxf])
+    File.open(opts[:out], 'w'){|f| f.write svg }
   end
 
   def generate_svg(type, template_number, dxf_file)
@@ -39,9 +38,6 @@ class DXF2Ponoko
 
   def dxf2svg(dxf_file)
     str = %x[#{DXF2SVG_EXEC} #{dxf_file}]
-    p DXF2SVG_EXEC
-    p dxf_file
-    p str
     str
   end
 
