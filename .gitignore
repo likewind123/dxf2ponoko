@@ -1,2 +1,3 @@
 dxf2svg/*.o
 dxf2svg/dxf2svg
+test/out/
